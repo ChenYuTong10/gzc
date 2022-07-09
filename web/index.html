@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corpus</title>
+    <link rel="stylesheet" href="index.css" type="text/css"></link>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-wrapper">
+            <img alt="logo" src="logo.png">
+        </div>
+        <div class="search-wrapper">
+            <input type="text" placeholder="Search Corpus">
+        </div>
+        <div class="advanced-wrapper">
+            <ul>
+                <li>
+                    <p>Search Type</p>
+                    <select name="type">
+                        <option value="body">Body</option>
+                        <option value="title">Title</option>
+                    </select>
+                </li>
+                <li>
+                    <p>Word Limit</p>
+                    <select name="limit">
+                        <option value="40">40</option>
+                        <option value="20">20</option>
+                        <option value="60">60</option>
+                    </select>
+                </li>
+                <li>
+                    <p>Literate Genre</p>
+                    <select name="genre">
+                        <option value="all">All</option>
+                        <option value="prose">Prose</option>
+                        <option value="novel">Novel</option>
+                        <option value="poetry">Poetry</option>
+                        <option value="play">Play</option>
+                        <option value="news">News</option>
+                        <option value="paper">Paper</option>
+                        <option value="partical">Partical</option>
+                        <option value="intro">Intro</option>
+                        <option value="review">Review</option>
+                    </select>
+                </li>
+                <li>
+                    <p>Created Time</p>
+                    <select name="time">
+                        <option value="all">All</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2022">2020</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </li>
+                <li>
+                    <p>Author Grade</p>
+                    <select name="grade">
+                        <option value="all">All</option>
+                        <option value="I">Grade I</option>
+                        <option value="II">Grade II</option>
+                        <option value="III">Grade III</option>
+                        <option value="IV">Grade IV</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const toQuery = function(o) {
+            if(typeof o !== "object") {
+                throw Error(`Can not convert ${typeof o} type to query string`);
+            }
+            let query = [];
+            Object.keys(o).forEach(key => {
+                query.push(`${key}=${o[key]}`);
+            });
+            return query.join('&');
+        };
+
+        const selectors = {
+            "type": "body",
+            "limit": "40", 
+            "genre": "all", 
+            "time": "all", 
+            "grade": "all"
+        };
+
+        Object.keys(selectors).forEach(key => {
+            const select = document.getElementsByName(key);
+            // defense
+            if(select.length >= 1) {
+                select[0].addEventListener("change", function(e) {
+                    const index = this.options.selectedIndex;
+                    selectors[key] = this.options[index].value;
+                });
+            }
+        });
+
+        const input = document.querySelector("input");
+        input.addEventListener("focus", function(e) {
+            this.placeholder = "";
+        });
+        input.addEventListener("blur", function(e) {
+            this.placeholder = "Search Corpus";
+        });
+        input.addEventListener("keydown", function(e) {
+            if(["Enter"].includes(e.key))
+            {
+                const text = input.value;
+                if(text.length !== 0)
+                {
+                    // send reqeust
+                    console.log("send request");
+                    // fetch(`http://127.0.0.1:9090/api/search?${toQuery(selectors)}`, {
+                    //     method: "GET",
+                    //     mode: "cors",
+                    //     cache: "no-cache",
+                    //     redirect: "follow"
+                    // })
+                    // .then(res => res.json())
+                    // .then(res => {
+                    //     console.log(res);
+                    // })
+                    // .catch(err => console.log("What's wrong"));
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('Poppins.ttf');
+}
+:root
+{
+    --container-padding-top: 56px;
+    --container-background-color: #fff;
+
+    --logo-box-height: 200px;
+    --logo-img-width: 245px;
+    --logo-img-height: 75px;
+
+    --search-box-width: 561px;
+    --search-box-height: 62px;
+    --search-box-vertical-padding: 20px;
+    --search-box-horizontal-padding: 50px;
+    --search-box-font-size: 1em;
+
+    --advanced-list-vertical-gap: 20px;
+    --advanced-list-item-width: 50%;
+    --advanced-list-item-label-width: 40%;
+    --advanced-list-item-label-color: #5f6368;
+    --advanced-list-item-label-size: 0.88em;
+    --advanced-list-item-select-width: 40%;
+
+    --box-vertical-gap: 38px;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+.container
+{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--container-padding-top);
+    background-color: var(--container-background-color);
+}
+.container .logo-wrapper
+{
+    height: var(--logo-box-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-bottom: var(--box-vertical-gap);
+}
+.container .logo-wrapper img
+{
+    width: var(--logo-img-width);
+    height: var(--logo-img-height);
+    object-fit: cover;
+}
+.container .search-wrapper
+{
+    position: relative;
+    width: var(--search-box-width);
+    height: var(--search-box-height);
+    margin-bottom: var(--box-vertical-gap);
+}
+.container .search-wrapper input
+{
+    width: 100%;
+    height: 100%;
+    padding: var(--search-box-vertical-padding) var(--search-box-horizontal-padding);
+    font-size: var(--search-box-font-size);
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+    box-shadow: 0px 3px 6px 0px rgb(0 0 0 / 10%), 0px 1px 3px 0px rgb(0 0 0 / 8%);
+}
+.container .search-wrapper input:focus
+{
+    box-shadow: 0px 6px 12px 0px rgb(0 0 0 / 10%), 0px 1px 3px 0px rgb(0 0 0 / 8%);
+}
+.container .search-wrapper::before
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc(var(--search-box-horizontal-padding) * 0.5);
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background-image: url('search.svg');
+}
+.container .advanced-wrapper
+{
+    position: relative;
+    width: var(--search-box-width);
+}
+.container .advanced-wrapper ul
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    row-gap: var(--advanced-list-vertical-gap);
+}
+.container .advanced-wrapper ul li
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--advanced-list-item-width);
+}
+.container .advanced-wrapper ul li p
+{
+    width: var(--advanced-list-item-label-width);
+    color: var(--advanced-list-item-label-color);
+    font-size: var(--advanced-list-item-label-size);
+}
+.container .advanced-wrapper ul li select
+{
+    width: var(--advanced-list-item-select-width);
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ebebeb;
+    text-align: center;
+}
+
+/* media query needs putting behind the normal style. */
+@media screen and (max-width: 672px)
+{
+    :root
+    {
+        --search-box-width: 449px;
+        --advanced-list-item-label-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 560px)
+{
+    :root
+    {
+        --search-box-width: 337px;
+    }
+    .container .advanced-wrapper ul
+    {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+    }
+    .container .advanced-wrapper ul li
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    .container .advanced-wrapper ul li p
+    {
+        color: var(--advanced-list-item-label-color);
+        font-size: var(--advanced-list-item-label-size);
+    }
+    .container .advanced-wrapper ul li select
+    {
+        outline: none;
+        border: none;
+        border-bottom: 1px solid #ebebeb;
+        text-align: center;
+    }
+}
