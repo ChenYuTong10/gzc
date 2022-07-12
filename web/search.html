@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Corpus</title>
+    <link rel="stylesheet" href="search.css" type="text/css"></link>
+</head>
+<body>
+    <!-- 
+        class 'icon' is used to show image by CSS.
+        It is similar with the component which needs
+        delivering sepecific width and icon url.
+    -->
+    <div class="container">
+        <div class="navigation-wrapper">
+            <div id="form">
+                <div class="logo-wrapper">
+                    <!-- 
+                        The original size of logo is 245 * 75px.
+                        Now it is shrink 1.63 time, that is 150 * 46px.
+                    -->
+                    <img alt="logo" src="logo.png">
+                </div>
+                <div class="search-wrapper">
+                    <input type="text" placeholder="Search Corpus">
+                    <div class="icon"></div>
+                </div>
+            </div>
+            <ul class="tool">
+                <li class="signin">
+                    <a href="#"><div class="icon"></div>Sign In</a>
+                </li>
+            </ul>
+        </div>
+        <div class="advanced-wrapper">
+            <ul>
+                <li>
+                    <select name="type">
+                        <option value="body">Body type</option>
+                        <option value="title">Title type</option>
+                    </select>
+                </li>
+                <li>
+                    <select name="limit">
+                        <option value="40">40 words</option>
+                        <option value="20">20 words</option>
+                        <option value="60">60 words</option>
+                    </select>
+                </li>
+                <li>
+                    <select name="genre">
+                        <option value="all">All Genre</option>
+                        <option value="prose">Prose</option>
+                        <option value="novel">Novel</option>
+                        <option value="poetry">Poetry</option>
+                        <option value="play">Play</option>
+                        <option value="news">News</option>
+                        <option value="paper">Paper</option>
+                        <option value="partical">Partical</option>
+                        <option value="intro">Intro</option>
+                        <option value="review">Review</option>
+                    </select>
+                </li>
+                <li>
+                    <select name="time">
+                        <option value="all">All Time</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2022">2020</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </li>
+                <li>
+                    <select name="grade">
+                        <option value="all">All Grade</option>
+                        <option value="I">Grade I</option>
+                        <option value="II">Grade II</option>
+                        <option value="III">Grade III</option>
+                        <option value="IV">Grade IV</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        <div class="divider-wrapper"></div>
+        <div class="cooked-wrapper">
+            <div class="total">About 3475, 000 results</div>
+            <div class="list">
+                <ul>
+                    <li>
+                        <h4 class="order">1</h4>
+                        <div class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud.</div>
+                        <div class="more">More</div>
+                    </li>
+                    <li>
+                        <h4 class="order">2</h4>
+                        <div class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud.</div>
+                        <div class="more">More</div>
+                    </li>
+                    <li>
+                        <h4 class="order">3</h4>
+                        <div class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud.</div>
+                        <div class="more">More</div>
+                    </li>
+                    <li>
+                        <h4 class="order">4</h4>
+                        <div class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud.</div>
+                        <div class="more">More</div>
+                    </li>
+                    <li>
+                        <h4 class="order">5</h4>
+                        <div class="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud.</div>
+                        <div class="more">More</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pagination-wrapper">
+            <ul class="pagination">
+                <li><a href="#" class="prev">< Prev</a></li>
+                <li class="page-num active"><a href="#">1</a></li>
+                <li class="page-num"><a href="#">2</a></li>
+                <li class="page-num"><a href="#">3</a></li>
+                <li class="page-num"><a href="#">4</a></li>
+                <li class="page-num"><a href="#">5</a></li>
+                <li class="page-num"><a href="#">6</a></li>
+                <li><a href="#" class="next">Next ></a></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const searchWrapper = document.querySelector(".search-wrapper");
+        
+        const input = document.querySelector("input");
+        input.addEventListener("focus", function(e) {
+            this.placeholder = "";
+            searchWrapper.classList.add("active");
+        });
+        input.addEventListener("blur", function(e) {
+            this.placeholder = "Search Corpus";
+            searchWrapper.classList.remove("active");
+        });
+
+        const icon = document.querySelector(".search-wrapper .icon");
+        icon.addEventListener("click", function(e) {
+            console.log("send request");
+        });
+
+        const next = document.querySelector(".next");
+        next.addEventListener("click", function(e) {
+            const activePage = document.querySelector(".page-num.active");
+            if(activePage.nextElementSibling.classList.contains("page-num")) {
+                activePage.nextElementSibling.classList.add("active");
+                activePage.classList.remove("active");
+            }
+        });
+        const prev = document.querySelector(".prev");
+        prev.addEventListener("click", function(e) {
+            const activePage = document.querySelector(".page-num.active");
+            if(activePage.previousElementSibling.classList.contains("page-num")) {
+                activePage.previousElementSibling.classList.add("active");
+                activePage.classList.remove("active");
+            }
+        });
+    </script>
+</body>
+</html>
