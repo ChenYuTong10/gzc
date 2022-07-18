@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ChenYuTong10/chardet"
+	mapset "github.com/deckarep/golang-set/v2"
 	"io/fs"
 	"io/ioutil"
 	"log"
@@ -50,7 +51,7 @@ func BatchDir(dir string) {
 	var lastDir string
 	var docs []Document
 	var authors []Author
-	var cutWord = make(map[string]Word)
+	var wordMap = make(map[string]mapset.Set[string])
 	var badPath []string // the path of bad file(e.g: not formatted, encode wrongly)
 	_ = filepath.Walk(dir, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
@@ -60,7 +61,7 @@ func BatchDir(dir string) {
 			return nil
 		}
 		if !info.IsDir() && filepath.Ext(path) == TextSuffix {
-			doc, author, words, err := BatchFile(path, info)
+			doc, author, cuts, err := BatchFile(path, info)
 			if err != nil {
 				badPath = append(badPath, path)
 				log.Println("batch file error:", err, "dir:", dir, "path:", path)
@@ -71,28 +72,31 @@ func BatchDir(dir string) {
 				lastDir = d
 				authors = append(authors, *author)
 			}
-			for _, text := range words {
-				word, loaded := cutWord[text]
-				if loaded {
-					word.Docs.Add(doc.Hash)
-				} else {
-					cutWord[text] = Word{Text: text, Docs: *u.NewSet[string]()}
+			for _, text := range cuts {
+				set, loaded := wordMap[text]
+				if !loaded {
+					set = mapset.NewSet[string]()
 				}
+				set.Add(doc.Hash)
+				wordMap[text] = set
 			}
 		}
 		return nil
 	})
-	if err := docRepo.InsertMany(docs); err != nil {
+	if err := docDao.InsertMany(docs); err != nil {
 		log.Println("storing documents error:", err, "docs:", docs)
 		return
 	}
-	words := u.MapToArray[string, Word](cutWord)
-	if err := wordRepo.InsertMany(words); err != nil {
-		log.Println("storing words error:", err, "words:", words)
+	if err := authorDao.InsertMany(authors); err != nil {
+		log.Println("storing authors error:", err, "authors:", authors)
 		return
 	}
-	if err := authorRepo.InsertMany(authors); err != nil {
-		log.Println("storing authors error:", err, "authors:", authors)
+	var words []Word
+	for text, set := range wordMap {
+		words = append(words, Word{Text: text, Docs: set})
+	}
+	if err := wordDao.InsertMany(words); err != nil {
+		log.Println("storing words error:", err, "words:", words)
 		return
 	}
 	log.Println("batch directory done", "dir:", dir)

@@ -1,10 +1,10 @@
 package main
 
 import (
-	u "serve/utils"
+	mapset "github.com/deckarep/golang-set/v2"
 )
 
-type Style int
+type Style = int
 
 const (
 	News Style = iota
@@ -17,20 +17,6 @@ const (
 	Practical
 	SelfIntro
 )
-
-//+-------+----------+
-//| Genre |   Type   |
-//+-------+----------+
-//|   S   |   散文   |
-//|   K   |   小说   |
-//|   P   |   诗歌   |
-//|   J   |   剧本   |
-//|   Y   |   评论   |
-//|   N   |   新闻   |
-//|   R   |   论文   |
-//|   O   | 自我介绍 |
-//|   I   |  应用文  |
-//+-------+----------+
 
 // StyleTb stores the relation of between symbol and its style.
 var StyleTb = map[string]Style{
@@ -46,24 +32,25 @@ var StyleTb = map[string]Style{
 }
 
 type Document struct {
-	Hash   string `json:"hash"` // body hash value
-	Size   int64  `json:"size"`
-	AutId  string `json:"authorId"` // author id
-	Order  int64  `json:"order"`    // written sequence
-	Style  Style  `json:"style"`    // type of literature
-	Source string `json:"source"`
-	Head   string `json:"head"`
-	Body   string `json:"body"`
+	Hash   string // body hash value
+	Size   int64
+	AutId  string // author id
+	Order  int64  // written sequence
+	Style  Style  // type of literature
+	Source string
+	Head   string
+	Body   string
 }
 
 type Author struct {
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Major string `json:"major"`
-	Class string `json:"class"`
+	Id    string
+	Name  string
+	Major string
+	Class string
 }
 
 type Word struct {
-	Text string        `json:"text"`
-	Docs u.Set[string] `json:"docs"`
+	Text string
+	Json []byte `bson:"Docs"` // the string of docs
+	Docs mapset.Set[string]
 }

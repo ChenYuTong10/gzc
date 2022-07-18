@@ -7,13 +7,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-	"path/filepath"
+	"net/http"
 )
 
 type Property struct {
 	Path struct {
 		Pro string `ini:"pro"`
 		Raw string `ini:"raw"`
+		Web string `ini:"web"`
 	} `ini:"path"`
 	Serve struct {
 		Port string `ini:"port"`
@@ -31,13 +32,12 @@ type Property struct {
 }
 
 var (
-	property *Property
-
-	mdb        *mongo.Client
-	ctx        context.Context
-	docRepo    *DocRepo
-	wordRepo   *WordRepo
-	authorRepo *AuthorRepo
+	mdb       *mongo.Client
+	ctx       context.Context
+	property  *Property
+	docDao    *DocDao
+	wordDao   *WordDao
+	authorDao *AuthorDao
 )
 
 func init() {
@@ -46,7 +46,6 @@ func init() {
 		log.Fatalln(err)
 	}
 
-	// repository
 	ctx = context.Background()
 	var err error
 	mdb, err = mongo.Connect(ctx, options.Client().ApplyURI(
@@ -63,14 +62,15 @@ func init() {
 	if err = mdb.Ping(ctx, nil); err != nil {
 		log.Fatalln("unsure with mongodb connection alive :", err)
 	}
-	docRepo = new(DocRepo).Init()
-	authorRepo = new(AuthorRepo).Init()
-	wordRepo = new(WordRepo).Init()
+	docDao = NewDocDao()
+	wordDao = NewWordDao()
+	authorDao = NewAuthorDao()
 }
 
 func main() {
-	//log.SetFlags(log.Llongfile)
-	//http.HandleFunc("/", Upload)
-	//http.ListenAndServe(property.Serve.Port, nil)
-	BatchDir(filepath.Join(property.Path.Pro, property.Path.Raw, "2018级千字文 原文"))
+	//BatchDir(filepath.Join(property.Path.Pro, property.Path.Raw, "2018级千字文 原文"))
+	http.HandleFunc("/", Gateway)
+	if err := http.ListenAndServe(property.Serve.Port, nil); err != nil {
+		log.Fatalln("unable to start service:", err)
+	}
 }

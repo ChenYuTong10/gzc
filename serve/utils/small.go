@@ -1,6 +1,7 @@
 package utils
 
 import (
+	mapset "github.com/deckarep/golang-set/v2"
 	"strings"
 )
 
@@ -18,10 +19,23 @@ func Cut(s string, prefix string, suffix string) (before, middle, back string) {
 	return b2, a2, a1
 }
 
-func MapToArray[K int | int64 | string, V any](m map[K]V) []V {
-	var arr []V
-	for _, v := range m {
-		arr = append(arr, v)
+func HasEmpty(vs ...string) bool {
+	if vs == nil {
+		return true
 	}
-	return arr
+	for _, v := range vs {
+		if len(v) == 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func ConvertSetToArray[T comparable](set mapset.Set[T]) []T {
+	var array []T
+	set.Each(func(e T) bool {
+		array = append(array, e)
+		return false
+	})
+	return array
 }
